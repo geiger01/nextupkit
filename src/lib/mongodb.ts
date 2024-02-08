@@ -1,13 +1,5 @@
-import type _mongoose from 'mongoose';
-import { connect } from 'mongoose';
-
-declare global {
-	// eslint-disable-next-line
-	var mongoose: {
-		promise: ReturnType<typeof connect> | null;
-		conn: typeof _mongoose | null;
-	};
-}
+// This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
+import { MongoClient } from 'mongodb';
 
 const { MONGODB_URI } = process.env;
 
@@ -17,40 +9,26 @@ if (!MONGODB_URI) {
 	);
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections from growing exponentially
- * during API Route usage.
- */
-let cached = global.mongoose;
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
 
-if (!cached) {
-	global.mongoose = { conn: null, promise: null };
-	cached = { conn: null, promise: null };
+if (process.env.NODE_ENV === 'development') {
+	// In development mode, use a global variable so that the value
+	// is preserved across module reloads caused by HMR (Hot Module Replacement).
+
+	let globalWithMongoClientPromise = global as typeof globalThis & {
+		_mongoClientPromise: Promise<MongoClient>;
+	};
+
+	if (!globalWithMongoClientPromise._mongoClientPromise) {
+		client = new MongoClient(MONGODB_URI);
+		globalWithMongoClientPromise._mongoClientPromise = client.connect();
+	}
+	clientPromise = globalWithMongoClientPromise._mongoClientPromise;
+} else {
+	// In production mode, it's best to not use a global variable.
+	client = new MongoClient(MONGODB_URI);
+	clientPromise = client.connect();
 }
 
-export async function connectDB() {
-	if (cached.conn) {
-		return cached.conn;
-	}
-
-	if (!cached.promise) {
-		const opts = {
-			bufferCommands: false,
-		};
-
-		cached.promise = connect(MONGODB_URI!, opts).then((mongoose) => {
-			return mongoose;
-		});
-	}
-
-	try {
-		cached.conn = await cached.promise;
-	} catch (e) {
-		cached.promise = null;
-		throw e;
-	}
-
-	return cached.conn;
-}
-
+export default clientPromise;
