@@ -10,7 +10,7 @@ const AuthProvider = ({ children }: { children: ReactNode; }) => {
 
 export const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;
-    const isDev = process.env.NODE_ENV === 'development';
+    const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
 
     if (!crispId || isDev) {
         return null;
@@ -38,7 +38,7 @@ export const CrispChatProvider = () => {
 
 export const GoogleAnalyticsProvider = () => {
     const gtag = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
-    const isDev = process.env.NODE_ENV === 'development';
+    const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
     
     if (!gtag || isDev) {
         return null;
