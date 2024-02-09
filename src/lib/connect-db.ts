@@ -1,14 +1,6 @@
 import type _mongoose from 'mongoose';
 import { connect } from 'mongoose';
 
-declare global {
-	// eslint-disable-next-line
-	var mongoose: {
-		promise: ReturnType<typeof connect> | null;
-		conn: typeof _mongoose | null;
-	};
-}
-
 const { MONGODB_URI } = process.env;
 
 if (!MONGODB_URI) {

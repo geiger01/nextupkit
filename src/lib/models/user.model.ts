@@ -15,6 +15,11 @@ const userSchema = new Schema(
 			min: 2,
 			max: 100,
 		},
+		role: {
+			type: String,
+			default: 'user',
+			enum: ['user', 'admin'],
+		},
 		emailVerified: Date,
 		password: String,
 		image: String,
