@@ -4,10 +4,6 @@ import React, { ReactNode } from "react";
 import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
 
-const AuthProvider = ({ children }: { children: ReactNode; }) => {
-    return <SessionProvider>{children}</SessionProvider>;
-};
-
 export const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;
     const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
@@ -67,6 +63,9 @@ export const GoogleAnalyticsProvider = () => {
     );
 };
 
+const AuthProvider = ({ children }: { children: ReactNode; }) => {
+    return <SessionProvider>{children}</SessionProvider>;
+};
 
 export const Providers = ({ children }: { children: ReactNode; }) => {
     return (
