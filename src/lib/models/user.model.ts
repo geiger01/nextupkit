@@ -17,13 +17,7 @@ const userSchema = new Schema(
 		},
 		emailVerified: Date,
 		password: String,
-		provider: String,
 		image: String,
-		role: {
-			type: String,
-			default: 'user',
-			enum: ['user', 'admin'],
-		},
 	},
 	{ timestamps: true }
 );
