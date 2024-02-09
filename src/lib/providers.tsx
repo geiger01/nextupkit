@@ -6,9 +6,8 @@ import { SessionProvider } from "next-auth/react";
 
 export const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;
-    const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
 
-    if (!crispId || isDev) {
+    if (!crispId) {
         return null;
     }
 
