@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
 
 export default function SignIn() {
     const router = useRouter();
     const [error, setError] = useState("");
     const { data: session, status: sessionStatus } = useSession();
-    console.log(session,'session')
 
     useEffect(() => {
         if (sessionStatus === "authenticated") {
@@ -37,17 +37,28 @@ export default function SignIn() {
             return;
         }
 
-        const res = await signIn("credentials", {
-            redirect: false,
-            email,
-            password,
-        });
+        try {
+            await axios.post("/api/login", {
+                email,
+                password,
+            });
 
-        if (res?.error) {
-            setError("Invalid email or password");
-            if (res?.url) router.replace("/");
-        } else {
-            setError("");
+            const res = await signIn('credentials', {
+                email,
+                password,
+            });
+
+            if (res?.error) {
+                setError("Invalid email or password");
+            }
+        } catch (e) {
+            if ((e instanceof AxiosError)) {
+                if (e.response?.status === 403) {
+                    console.log('Email verfication sent');
+                } else {
+                    setError(e.response?.data?.message);
+                }
+            }
         }
     };
 
@@ -109,4 +120,4 @@ export default function SignIn() {
             </div>
         )
     );
-}
+};

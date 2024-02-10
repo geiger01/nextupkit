@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import axios, { AxiosError } from "axios";
 
 export default function SignUp() {
     const [error, setError] = useState("");
@@ -26,8 +27,6 @@ export default function SignUp() {
         const email = e.target[1].value; name;
         const password = e.target[2].value;
 
-        console.log(name, 'name');
-
         if (!isValidEmail(email)) {
             setError("Email is invalid");
             return;
@@ -39,28 +38,23 @@ export default function SignUp() {
         }
 
         try {
-            const res = await fetch("/api/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                }),
+            setError("");
+            const res = await axios.post("/api/register", {
+                name,
+                email,
+                password,
             });
-            console.log(res);
-            if (res.status === 400) {
-                setError("This email is already registered");
+
+            console.log('verfication email sent')
+            // TODO show verfication message
+        } catch (e) {
+            if ((e instanceof AxiosError)) {
+                if (e.response?.status === 403) {
+                    console.log('Email verfication sent');
+                } else {
+                    setError(e.response?.data?.message);
+                }
             }
-            if (res.status === 200) {
-                setError("");
-                router.push("/login");
-            }
-        } catch (error) {
-            setError("Error, try again");
-            console.log(error);
         }
     };
 

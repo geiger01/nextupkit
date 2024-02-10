@@ -4,7 +4,7 @@ import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from './mongodb';
-import { User } from './models/user.model';
+import { User } from '../models/user.model';
 import bcrypt from 'bcryptjs';
 import { connectDB } from './connect-db';
 
@@ -33,17 +33,12 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials) {
 				await connectDB();
 				const user = await User.findOne({ email: credentials?.email });
-
-				if (!user) {
-					return null;
-				}
-
 				const passwordsMatch = await bcrypt.compare(
 					credentials?.password as string,
 					user.password
 				);
 
-				if (!passwordsMatch) {
+				if (!user || !user.emailVerified || !passwordsMatch) {
 					return null;
 				}
 
@@ -86,4 +81,8 @@ export const authOptions: NextAuthOptions = {
 	},
 	adapter: MongoDBAdapter(clientPromise),
 	secret: process.env.NEXTAUTH_SECRET,
+	pages: {
+		signIn: 'sign-in',
+		error: 'sign-in/error',
+	},
 };
