@@ -3,6 +3,7 @@
 import React, { ReactNode } from "react";
 import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/toaster";
 
 export const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;
@@ -34,7 +35,7 @@ export const CrispChatProvider = () => {
 export const GoogleAnalyticsProvider = () => {
     const gtag = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
     const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
-    
+
     if (!gtag || isDev) {
         return null;
     }
@@ -73,6 +74,7 @@ export const Providers = ({ children }: { children: ReactNode; }) => {
             <CrispChatProvider />
             <AuthProvider>
                 {children}
+                <Toaster />
             </AuthProvider>
         </>
     );

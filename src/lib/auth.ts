@@ -1,12 +1,15 @@
 import { NextAuthOptions } from 'next-auth';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
-import Credentials from 'next-auth/providers/credentials';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import EmailProvider, {
+	SendVerificationRequestParams,
+} from 'next-auth/providers/email';
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import clientPromise from './mongodb';
 import { User } from '../models/user.model';
-import bcrypt from 'bcryptjs';
 import { connectDB } from './connect-db';
+import { Resend } from 'resend';
+import { Adapter } from 'next-auth/adapters';
 
 // For more information on each option (and a full list of options) go to
 // https://authjs.dev/reference/providers/oauth
@@ -20,31 +23,49 @@ export const authOptions: NextAuthOptions = {
 			clientId: process.env.GITHUB_CLIENT_ID as string,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
 		}),
-		Credentials({
-			name: 'credentials',
-			credentials: {
-				email: {
-					type: 'text',
-				},
-				password: {
-					type: 'password',
-				},
-			},
-			async authorize(credentials) {
-				await connectDB();
-				const user = await User.findOne({ email: credentials?.email });
-				const passwordsMatch = await bcrypt.compare(
-					credentials?.password as string,
-					user.password
-				);
+		EmailProvider({
+			// TODO change
+			from: 'noreply@lecturekit.io',
+			sendVerificationRequest: async (
+				params: SendVerificationRequestParams
+			) => {
+				let { identifier: email, url, provider, token } = params;
+				let resend = new Resend(process.env.RESEND_API_KEY!);
 
-				if (!user || !user.emailVerified || !passwordsMatch) {
-					return null;
-				}
-
-				return user;
+				await resend.emails.send({
+					from: provider.from,
+					to: email,
+					subject: 'Login Link to your Account',
+					html: `<p>Click the link below to sign in to your account:</p>\
+		     <p><a href="${url}"><b>Sign in</b></a></p>`,
+				});
 			},
 		}),
+		// Credentials({
+		// 	name: 'credentials',
+		// 	credentials: {
+		// 		email: {
+		// 			type: 'text',
+		// 		},
+		// 		password: {
+		// 			type: 'password',
+		// 		},
+		// 	},
+		// 	async authorize(credentials) {
+		// 		await connectDB();
+		// 		const user = await User.findOne({ email: credentials?.email });
+		// 		const passwordsMatch = await bcrypt.compare(
+		// 			credentials?.password as string,
+		// 			user.password
+		// 		);
+
+		// 		if (!user || !user.emailVerified || !passwordsMatch) {
+		// 			return null;
+		// 		}
+
+		// 		return user;
+		// 	},
+		// }),
 	],
 	callbacks: {
 		async session({ token, session }) {
@@ -79,7 +100,7 @@ export const authOptions: NextAuthOptions = {
 	session: {
 		strategy: 'jwt',
 	},
-	adapter: MongoDBAdapter(clientPromise),
+	adapter: MongoDBAdapter(clientPromise) as Adapter,
 	secret: process.env.NEXTAUTH_SECRET,
 	pages: {
 		signIn: '/sign-in',

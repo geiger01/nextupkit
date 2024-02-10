@@ -1,129 +1,47 @@
-"use client";
+// "use client";
 
-import React, { useEffect, useState } from "react";
+import { buttonVariants } from "@/components/ui/button";
+import { UserAuthForm } from "@/components/user-auth-form";
+import { cn } from "@/lib/utils";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
+
 
 export default function SignIn() {
-    const router = useRouter();
-    const [error, setError] = useState("");
-    const { data: session, status: sessionStatus } = useSession();
-
-    useEffect(() => {
-        if (sessionStatus === "authenticated") {
-            router.replace("/");
-        }
-    }, [sessionStatus, router]);
-
-    const isValidEmail = (email: string) => {
-        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-        return emailRegex.test(email);
-    };
-
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        const email = e.target[0].value;
-        const password = e.target[1].value;
-
-        if (!isValidEmail(email)) {
-            setError("Email is invalid");
-            return;
-        }
-
-        if (!password || password.length < 8) {
-            setError("Password is invalid");
-            return;
-        }
-
-        try {
-            await axios.post("/api/login", {
-                email,
-                password,
-            });
-
-            const res = await signIn('credentials', {
-                email,
-                password,
-            });
-
-            if (res?.error) {
-                setError("Invalid email or password");
-            }
-        } catch (e) {
-            if ((e instanceof AxiosError)) {
-                if (e.response?.status === 403) {
-                    console.log('Email verfication sent');
-                } else {
-                    setError(e.response?.data?.message);
-                }
-            }
-        }
-    };
-
-    if (sessionStatus === "loading") {
-        return <h1>Loading...</h1>;
-    }
-
     return (
-        sessionStatus !== "authenticated" && (
-            <div className="flex min-h-screen flex-col items-center justify-between p-24">
-                <div className="bg-[#212121] p-8 rounded shadow-md w-96">
-                    <h1 className="text-4xl text-center font-semibold mb-8">Login</h1>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-                            placeholder="Email"
-                            required
-                        />
-                        <input
-                            type="password"
-                            className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-                            placeholder="Password"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-                        >
-                            {" "}
-                            Sign In
-                        </button>
-                        <p className="text-red-600 text-[16px] mb-4">{error && error}</p>
-                    </form>
-                    <button
-                        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
-                        onClick={() => {
-                            signIn("github");
-                        }}
-                    >
-                        Sign In with Github
-                    </button>
-                    <button
-                        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
-                        onClick={() => {
-                            signIn("google");
-                        }}
-                    >
-                        Sign In with Google
-                    </button>
-                    <div className="text-center text-gray-500 mt-4">- OR -</div>
-                    <Link
-                        className="block text-center text-blue-500 hover:underline mt-2"
-                        href="/sign-up"
-                    >
-                        Register Here
-                    </Link>
-                    <Link
-                        className="block text-center text-blue-500 hover:underline mt-2"
-                        href="/reset-password"
-                    >
-                        Forgot password?
-                    </Link>
+        <div className="container flex h-screen w-screen flex-col items-center justify-center">
+            <Link
+                href="/"
+                className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    "absolute left-4 top-4 md:left-8 md:top-8"
+                )}
+            >
+                <>
+                    <ChevronLeft className="mr-2 h-4 w-4" />
+                    Back
+                </>
+            </Link>
+            <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+                <div className="flex flex-col space-y-2 text-center">
+                    {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
+                    <h1 className="text-2xl font-semibold tracking-tight">
+                        Welcome back
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                        Enter your email to sign in to your account
+                    </p>
                 </div>
+                <UserAuthForm />
+                <p className="px-8 text-center text-sm text-muted-foreground">
+                    <Link
+                        href="/sign-up"
+                        className="hover:text-brand underline underline-offset-4"
+                    >
+                        Don&apos;t have an account? Sign Up
+                    </Link>
+                </p>
             </div>
-        )
+        </div>
     );
-};
+}
