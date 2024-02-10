@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
 		}),
 		EmailProvider({
-			// TODO change
+			// TODO change add to env
 			from: 'noreply@lecturekit.io',
 			sendVerificationRequest: async (
 				params: SendVerificationRequestParams
@@ -41,31 +41,6 @@ export const authOptions: NextAuthOptions = {
 				});
 			},
 		}),
-		// Credentials({
-		// 	name: 'credentials',
-		// 	credentials: {
-		// 		email: {
-		// 			type: 'text',
-		// 		},
-		// 		password: {
-		// 			type: 'password',
-		// 		},
-		// 	},
-		// 	async authorize(credentials) {
-		// 		await connectDB();
-		// 		const user = await User.findOne({ email: credentials?.email });
-		// 		const passwordsMatch = await bcrypt.compare(
-		// 			credentials?.password as string,
-		// 			user.password
-		// 		);
-
-		// 		if (!user || !user.emailVerified || !passwordsMatch) {
-		// 			return null;
-		// 		}
-
-		// 		return user;
-		// 	},
-		// }),
 	],
 	callbacks: {
 		async session({ token, session }) {
@@ -103,7 +78,7 @@ export const authOptions: NextAuthOptions = {
 	adapter: MongoDBAdapter(clientPromise) as Adapter,
 	secret: process.env.NEXTAUTH_SECRET,
 	pages: {
-		signIn: '/sign-in',
-		error: '/sign-in/error',
+		signIn: '/login',
+		error: '/login/error',
 	},
 };

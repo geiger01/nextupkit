@@ -1,21 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { toast } from "./ui/use-toast";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { signIn, useSession } from "next-auth/react";
 import { Github, Loader2 } from "lucide-react";
-import axios, { AxiosError } from "axios";
 
-interface UserAuthFormProps {
-    
-}
-
-export function UserAuthForm({ }: UserAuthFormProps) {
+export function UserAuthForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [isGitHubLoading, setIsGitHubLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -28,61 +22,30 @@ export function UserAuthForm({ }: UserAuthFormProps) {
         }
     }, [sessionStatus, router]);
 
-    const [user, setUser] = useState({
-        email: '',
-        password: ''
-    });
+    const [email, setEmail] = useState('');
 
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
-        // setIsLoading(true);
+        setIsLoading(true);
 
-        try {
-            // await axios.post("/api/login", {
-            //     email: user.email,
-            //     password: user.password,
-            // });
+        const signInResult = await signIn("email", {
+            email,
+            redirect: false,
+        });
 
-            // const signInResult = await signIn("credentials", {
-            //     email: user.email,
-            //     password: user.password,
-            //     redirect: false,
-            // });
-            const signInResult = await signIn("email", {
-                email: user.email,
-                redirect: false,
-            });
-
-            if (!signInResult?.ok) {
-                return toast({
-                    title: "Something went wrong.",
-                    description: "Your sign in request failed. Please try again.",
-                    variant: "destructive",
-                });
-            }
-
+        setIsLoading(false);
+        if (!signInResult?.ok) {
             return toast({
-                title: "Check your email",
-                description: "We sent you a login link. Be sure to check your spam too.",
+                title: "Something went wrong.",
+                description: "Your sign in request failed. Please try again.",
+                variant: "destructive",
             });
-        } catch (e) {
-            if ((e instanceof AxiosError)) {
-                if (e.response?.status === 403) {
-                    return toast({
-                        title: "Check your email",
-                        description: "We sent you a login link. Be sure to check your spam too.",
-                    });
-                } else {
-                    return toast({
-                        title: "Could not login",
-                        description: e.response?.data?.message,
-                        variant: 'destructive'
-                    });
-                }
-            }
         }
 
-        // setIsLoading(false);
+        return toast({
+            title: "Check your email",
+            description: "We sent you a login link. Be sure to check your spam too.",
+        });
     }
 
     return (
@@ -92,8 +55,8 @@ export function UserAuthForm({ }: UserAuthFormProps) {
                     <div className="grid gap-1">
                         <Input
                             id="email"
-                            value={user.email}
-                            onChange={(e) => setUser({ ...user, email: e.target.value })}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="name@example.com"
                             type="email"
                             autoCapitalize="none"
@@ -157,7 +120,6 @@ export function UserAuthForm({ }: UserAuthFormProps) {
                     Google
                 </Button>
             </div>
-
         </div>
     );
 }
