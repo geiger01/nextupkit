@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import axios, { AxiosError } from "axios";
 
 export const VerificationForm = () => {
-    const [error, setError] = useState<string | undefined>();
-    const [success, setSuccess] = useState<string | undefined>();
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const router = useRouter();
 
     const searchParams = useSearchParams();
 
@@ -19,13 +20,15 @@ export const VerificationForm = () => {
         }
 
         try {
-            const { data } = await axios.post('/api/verify-email', {
+            await axios.post('/api/verify-email', {
                 token
             });
-            console.log(data, 'datda');
-            // TODO redirect to login
+            // TODO show success message and then redirect to login
+            router.replace('/sign-in');
         } catch (e) {
-
+            if ((e instanceof AxiosError)) {
+                setError(e.response?.data?.message);
+            }
         }
     }
 
@@ -37,6 +40,8 @@ export const VerificationForm = () => {
     return (
         <div>
             verigying...
+
+            error: {error}
         </div>
     );
 };
