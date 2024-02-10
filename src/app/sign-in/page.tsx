@@ -116,6 +116,12 @@ export default function SignIn() {
                     >
                         Register Here
                     </Link>
+                    <Link
+                        className="block text-center text-blue-500 hover:underline mt-2"
+                        href="/reset-password"
+                    >
+                        Forgot password?
+                    </Link>
                 </div>
             </div>
         )

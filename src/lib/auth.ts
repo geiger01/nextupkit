@@ -82,7 +82,7 @@ export const authOptions: NextAuthOptions = {
 	adapter: MongoDBAdapter(clientPromise),
 	secret: process.env.NEXTAUTH_SECRET,
 	pages: {
-		signIn: 'sign-in',
-		error: 'sign-in/error',
+		signIn: '/sign-in',
+		error: '/sign-in/error',
 	},
 };
