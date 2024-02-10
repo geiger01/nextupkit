@@ -20,8 +20,6 @@ const userSchema = new Schema(
 			default: 'user',
 			enum: ['user', 'admin'],
 		},
-		emailVerified: Date,
-		password: String,
 		image: String,
 	},
 	{ timestamps: true }
