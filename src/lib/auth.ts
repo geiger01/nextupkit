@@ -24,8 +24,7 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
 		}),
 		EmailProvider({
-			// TODO change add to env
-			from: 'noreply@lecturekit.io',
+			from: process.env.FROM_EMAIL as string,
 			sendVerificationRequest: async (
 				params: SendVerificationRequestParams
 			) => {

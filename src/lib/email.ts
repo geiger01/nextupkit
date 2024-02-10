@@ -9,8 +9,7 @@ export const sendEmail = async (
 	from?: string
 ) => {
 	await resend.emails.send({
-		// TODO replace
-		from: from || `LectureKit <noreply@lecturekit.io>`,
+		from: from || (process.env.FROM_EMAIL as string),
 		to,
 		subject,
 		html,
