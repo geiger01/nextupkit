@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
 			sendVerificationRequest: async (
 				params: SendVerificationRequestParams
 			) => {
-				let { identifier: email, url, provider, token } = params;
+				let { identifier: email, url, provider } = params;
 				let resend = new Resend(process.env.RESEND_API_KEY!);
 
 				await resend.emails.send({
