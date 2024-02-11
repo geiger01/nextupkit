@@ -1,29 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { toast } from "./ui/use-toast";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Github, Loader2 } from "lucide-react";
 
 export function UserAuthForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [isGitHubLoading, setIsGitHubLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-    
-    const router = useRouter();
-    const { status: sessionStatus } = useSession();
-
-    useEffect(() => {
-        if (sessionStatus === "authenticated") {
-            router.replace("/");
-        }
-    }, [sessionStatus, router]);
-
     const [email, setEmail] = useState('');
+
+    const searchParams = useSearchParams();
+    const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
+        ? "Email already in use with different provider"
+        : "";
 
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -75,6 +70,11 @@ export function UserAuthForm() {
                         Sign In
                     </Button>
                 </div>
+                {urlError &&
+                    <small className="text-red-400">
+                        {urlError}
+                    </small>
+                }
             </form>
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">

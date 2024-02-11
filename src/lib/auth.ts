@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
 
 			if (!existingUser) return token;
 
-			token.name = existingUser.name;
+			token.name = existingUser.name || '';
 			token.email = existingUser.email;
 			token.image = existingUser.image || '';
 			token.role = existingUser.role || 'user';

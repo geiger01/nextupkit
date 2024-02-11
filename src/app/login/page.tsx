@@ -1,12 +1,21 @@
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/user-auth-form";
+import { authOptions } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { ChevronLeft } from "lucide-react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+    const user = await getServerSession(authOptions);
+    
+    if (user) {
+        redirect('/');
+    }
+
     return (
-        <div className="container flex h-screen w-screen flex-col items-center justify-center">
+        <div className="flex items-center justify-center min-h-screen p-5">
             <Link
                 href="/"
                 className={cn(
