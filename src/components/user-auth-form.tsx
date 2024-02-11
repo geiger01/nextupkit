@@ -8,6 +8,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { signIn } from "next-auth/react";
 import { Github, Loader2 } from "lucide-react";
+import { LOGIN_REDIRECT } from "@/lib/consts";
 
 export function UserAuthForm() {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +17,7 @@ export function UserAuthForm() {
     const [email, setEmail] = useState('');
 
     const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl");
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "Email already in use with different provider"
         : "";
@@ -26,7 +28,8 @@ export function UserAuthForm() {
 
         const signInResult = await signIn("email", {
             email,
-            redirect: false,
+            callbackUrl: callbackUrl || LOGIN_REDIRECT,
+            redirect:false
         });
 
         setIsLoading(false);
@@ -62,7 +65,7 @@ export function UserAuthForm() {
                         />
                     </div>
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || !email.trim()}
                     >
                         {isLoading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -92,7 +95,9 @@ export function UserAuthForm() {
                     variant={'outline'}
                     onClick={() => {
                         setIsGitHubLoading(true);
-                        signIn("github");
+                        signIn("github", {
+                            callbackUrl: callbackUrl || LOGIN_REDIRECT
+                        });
                     }}
                     disabled={isLoading || isGoogleLoading || isGitHubLoading}
                 >
@@ -108,7 +113,9 @@ export function UserAuthForm() {
                     variant={'outline'}
                     onClick={() => {
                         setIsGoogleLoading(true);
-                        signIn("google");
+                        signIn("google", {
+                            callbackUrl: callbackUrl || LOGIN_REDIRECT
+                        });
                     }}
                     disabled={isLoading || isGoogleLoading || isGitHubLoading}
                 >

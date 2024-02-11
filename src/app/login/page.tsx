@@ -1,6 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/user-auth-form";
 import { authOptions } from "@/lib/auth";
+import { LOGIN_REDIRECT } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 import { ChevronLeft } from "lucide-react";
 import { getServerSession } from "next-auth";
@@ -9,9 +10,9 @@ import { redirect } from "next/navigation";
 
 export default async function LoginPage() {
     const user = await getServerSession(authOptions);
-    
+
     if (user) {
-        redirect('/');
+        redirect(LOGIN_REDIRECT);
     }
 
     return (
