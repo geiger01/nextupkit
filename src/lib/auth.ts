@@ -1,14 +1,12 @@
 import Github from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
-// import EmailProvider from 'next-auth/providers/email';
-import EmailProvider from 'next-auth/providers/email';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import clientPromise from './mongodb';
 import { User } from '../models/user.model';
 import { connectDB } from './connect-db';
 import { Resend } from 'resend';
 import NextAuth from 'next-auth';
-import { Provider, ProviderType } from 'next-auth/providers';
+import { Provider } from 'next-auth/providers';
 
 // For more information on each option (and a full list of options) go to
 // https://authjs.dev/reference/providers/oauth
@@ -30,11 +28,11 @@ export const {
 		{
 			id: 'email',
 			type: 'email',
-			async sendVerificationRequest(params: any) {
+			sendVerificationRequest(params) {
 				let { identifier: email, url } = params;
 				let resend = new Resend(process.env.RESEND_API_KEY);
 
-				await resend.emails.send({
+				resend.emails.send({
 					from: process.env.FROM_EMAIL as string,
 					to: email,
 					subject: 'Login Link to your Account',
@@ -42,22 +40,8 @@ export const {
 				     <p><a href="${url}"><b>Sign in</b></a></p>`,
 				});
 			},
-		} as any,
-		// EmailProvider({
-		// 	from: process.env.FROM_EMAIL as string,
-		// 	sendVerificationRequest: async (params) => {
-		// 		let { identifier: email, url, provider } = params;
-		// 		let resend = new Resend(process.env.RESEND_API_KEY);
-
-		// 		await resend.emails.send({
-		// 			from: provider.from,
-		// 			to: email,
-		// 			subject: 'Login Link to your Account',
-		// 			html: `<p>Click the link below to sign in to your account:</p>\
-		//      <p><a href="${url}"><b>Sign in</b></a></p>`,
-		// 		});
-		// 	},
-	],
+		},
+	] as Provider[],
 	callbacks: {
 		async session({ token, session }) {
 			if (session.user) {
