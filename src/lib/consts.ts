@@ -1,1 +1,1 @@
-export const LOGIN_REDIRECT = '/dashboard';
+export const LOGIN_REDIRECT = '/';
