@@ -1,13 +1,13 @@
 import { Schema, models, model } from 'mongoose';
 
-const userPlanSchema = new Schema(
+const orderPlanSchema = new Schema(
 	{
 		userId: {
 			type: String,
 			required: true,
 			index: true,
 		},
-		planId: {
+		orderId: {
 			type: String,
 			required: true,
 		},
@@ -15,20 +15,23 @@ const userPlanSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		variantId: {
+			type: String,
+			required: true,
+		},
 		price: {
 			type: Number,
 			required: true,
 		},
-		orderId: String,
-		variantId: String,
+		status: {
+			type: String,
+			default: 'success',
+			enum: ['success', 'error', 'refunded'],
+		},
 		planName: String,
-		subscriptionId: String,
-		subscriptionEndDate: Date,
-		status: String,
-		updateUrl: String,
-		cancelUrl: String,
+		variantName: String,
 	},
 	{ timestamps: true }
 );
 
-export const UserPlan = models.UserPlan || model('UserPlan', userPlanSchema);
+export const Order = models.Order || model('Order', orderPlanSchema);
