@@ -28,6 +28,10 @@ const orderPlanSchema = new Schema(
 			default: 'success',
 			enum: ['success', 'error', 'refunded'],
 		},
+		receiptUrl: {
+			type: String,
+			required: true,
+		},
 		planName: String,
 		variantName: String,
 	},

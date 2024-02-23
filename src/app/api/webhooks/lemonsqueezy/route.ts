@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
 		const payload = JSON.parse(rawBody);
 		const eventName: TEvent = payload.meta.event_name;
-		
+
 		const userId = payload.meta.custom_data.user_id;
 		await connectDB();
 
@@ -47,6 +47,7 @@ export async function POST(req: Request) {
 						variantName: payload.data.attributes.first_order_item.variant_name,
 						planName: payload.data.attributes.first_order_item.product_name,
 						price: payload.data.attributes.total || 0,
+						receiptUrl: payload.data.attributes.urls.receipt,
 						status: 'success',
 					});
 					break;
