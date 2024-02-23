@@ -10,6 +10,7 @@ import { User } from '../models/user.model';
 import { connectDB } from './connect-db';
 import { Resend } from 'resend';
 import { Adapter } from 'next-auth/adapters';
+import { getServerSession } from 'next-auth';
 
 // For more information on each option (and a full list of options) go to
 // https://authjs.dev/reference/providers/oauth
@@ -81,3 +82,7 @@ export const authOptions: NextAuthOptions = {
 		error: '/login/error',
 	},
 };
+
+export function getSession() {
+	return getServerSession(authOptions);
+}

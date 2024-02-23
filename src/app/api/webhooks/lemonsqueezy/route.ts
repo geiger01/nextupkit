@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
 		const payload = JSON.parse(rawBody);
 		const eventName: TEvent = payload.meta.event_name;
-
+		
 		const userId = payload.meta.custom_data.user_id;
 		await connectDB();
 
