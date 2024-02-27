@@ -7,26 +7,29 @@ const userPlanSchema = new Schema(
 			required: true,
 			index: true,
 		},
-		planId: {
+		subscriptionId: {
 			type: String,
 			required: true,
+			index: true,
 		},
 		productId: {
 			type: String,
 			required: true,
+			index: true,
 		},
-		price: {
-			type: Number,
+		variantId: {
+			type: String,
 			required: true,
 		},
-		orderId: String,
-		variantId: String,
-		planName: String,
-		subscriptionId: String,
-		subscriptionEndDate: Date,
-		status: String,
+		status: {
+			type: String,
+			default: 'active',
+			enum: ['active', 'on_trial', 'expired', 'paused', 'cancelled'],
+		},
+		productName: String,
+		renewsAt: String,
+		endsAt: String,
 		updateUrl: String,
-		cancelUrl: String,
 	},
 	{ timestamps: true }
 );

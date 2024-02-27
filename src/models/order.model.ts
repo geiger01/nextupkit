@@ -19,10 +19,6 @@ const orderPlanSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		price: {
-			type: Number,
-			required: true,
-		},
 		status: {
 			type: String,
 			default: 'success',
@@ -32,7 +28,7 @@ const orderPlanSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		planName: String,
+		productName: String,
 		variantName: String,
 	},
 	{ timestamps: true }

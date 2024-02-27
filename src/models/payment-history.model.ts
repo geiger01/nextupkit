@@ -7,39 +7,25 @@ const paymentHistorySchema = new Schema(
 			required: true,
 			index: true,
 		},
-		planId: {
+		subscriptionId: {
 			type: String,
 			required: true,
+			index: true,
 		},
 		productId: {
 			type: String,
 			required: true,
 		},
-		subscriptionId: {
+		variantId: {
 			type: String,
 			required: true,
 		},
 		status: {
 			type: String,
 			default: 'success',
-			enum: ['success', 'error', 'refunded'],
+			enum: ['success', 'failed', 'refunded'],
 		},
-		currency: {
-			type: String,
-			required: true,
-		},
-		price: {
-			type: Number,
-			required: true,
-		},
-		tax: {
-			type: Number,
-			required: true,
-		},
-		receiptUrl: {
-			type: String,
-			required: true,
-		},
+		productName: String,
 	},
 	{ timestamps: true }
 );

@@ -1,5 +1,7 @@
 import { connectDB } from '@/lib/connect-db';
 import { Order } from '@/models/order.model';
+import { PaymentHistory } from '@/models/payment-history.model';
+import { UserPlan } from '@/models/user-plan.model';
 import { NextResponse } from 'next/server';
 
 type TEvent =
@@ -45,35 +47,76 @@ export async function POST(req: Request) {
 						productId: `${payload.data.attributes.first_order_item.product_id}`,
 						variantId: `${payload.data.attributes.first_order_item.variant_id}`,
 						variantName: payload.data.attributes.first_order_item.variant_name,
-						planName: payload.data.attributes.first_order_item.product_name,
-						price: payload.data.attributes.total || 0,
+						productName: payload.data.attributes.first_order_item.product_name,
 						receiptUrl: payload.data.attributes.urls.receipt,
 						status: 'success',
 					});
 					break;
 				case 'order_refunded':
-					const order = await Order.findOne({ userId });
-					if (order) {
-						await Order.findOneAndUpdate({ userId }, { status: 'refunded' });
-					}
+					await Order.findOneAndUpdate({ userId }, { status: 'refunded' });
 					break;
 			}
 		}
 
-		// TODO handle UserPlan actions, and PaymentHistory actions
 		if (eventName.startsWith('subscription_')) {
 			switch (eventName) {
 				case 'subscription_created':
-					break;
 				case 'subscription_updated':
+					await UserPlan.findOneAndUpdate(
+						{ userId },
+						{
+							subscriptionId: `${payload.data.attributes.first_subscription_item.subscription_id}`,
+							productId: `${payload.data.attributes.product_id}`,
+							variantId: `${payload.data.attributes.variant_id}`,
+							status: payload.data.attributes.status,
+							productName: payload.data.attributes.product_name || '',
+							renewsAt: payload.data.attributes.renews_at,
+							endsAt: payload.data.attributes.ends_at,
+							updateUrl:
+								payload.data.attributes.urls.update_payment_method || '',
+						},
+						// Upsert - if no existing document, it creates one.
+						{ upsert: true, new: true }
+					);
 					break;
 				case 'subscription_cancelled':
+					await UserPlan.findOneAndUpdate(
+						{ userId },
+						{
+							status: payload.data.attributes.status,
+							endsAt: payload.data.attributes.ends_at,
+						}
+					);
 					break;
 				case 'subscription_payment_success':
-					break;
 				case 'subscription_payment_failed':
-					break;
 				case 'subscription_payment_refunded':
+					if (eventName === 'subscription_payment_success') {
+						await UserPlan.findOneAndUpdate(
+							{ userId },
+							{
+								status: payload.data.attributes.status,
+								renewsAt: payload.data.attributes.renews_at,
+								endsAt: payload.data.attributes.ends_at,
+							}
+						);
+					}
+
+					let paymentHistoryStatus = 'success';
+					if (eventName === 'subscription_payment_failed') {
+						paymentHistoryStatus = 'failed';
+					} else if (eventName === 'subscription_payment_refunded') {
+						paymentHistoryStatus = 'refunded';
+					}
+
+					await PaymentHistory.create({
+						userId,
+						subscriptionId: `${payload.data.attributes.first_subscription_item.subscription_id}`,
+						productId: `${payload.data.attributes.product_id}`,
+						variantId: `${payload.data.attributes.variant_id}`,
+						status: paymentHistoryStatus,
+						productName: payload.data.attributes.product_name || '',
+					});
 					break;
 			}
 		}

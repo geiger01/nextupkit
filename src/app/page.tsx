@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       Home
-      <button onClick={() => createCheckout('264062')}>click</button>
+      <button onClick={() => createCheckout('269320')}>click</button>
 
       <p>
         {session?.user?.email}
