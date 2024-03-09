@@ -3,25 +3,25 @@ import { getSession } from '@/lib/auth';
 import { lemonsqueezyClient } from '@/lib/lemonsqueezy';
 
 export async function POST(req: Request) {
-	const session = await getSession();
-
-	if (!session) {
-		return NextResponse.json(
-			{ success: false, message: 'Not logged in.' },
-			{ status: 401 }
-		);
-	}
-
-	const body = await req.json();
-
-	if (!body.variantId) {
-		return NextResponse.json(
-			{ success: false, message: 'No variant ID was provided.' },
-			{ status: 400 }
-		);
-	}
-
 	try {
+		const session = await getSession();
+
+		if (!session) {
+			return NextResponse.json(
+				{ success: false, message: 'Not logged in.' },
+				{ status: 401 }
+			);
+		}
+
+		const body = await req.json();
+
+		if (!body.variantId) {
+			return NextResponse.json(
+				{ success: false, message: 'No variant ID was provided.' },
+				{ status: 400 }
+			);
+		}
+
 		const { data: checkout } = await lemonsqueezyClient.post('/checkouts', {
 			data: {
 				type: 'checkouts',
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
 		return NextResponse.json(
 			{
 				success: false,
-				message: (e as Error).message || 'Could not create checkout link',
+				message: (e as Error).message || 'Could not create checkout link.',
 			},
 			{ status: 400 }
 		);

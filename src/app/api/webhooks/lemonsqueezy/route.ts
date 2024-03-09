@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
 		if (!crypto.timingSafeEqual(digest, signature)) {
 			return NextResponse.json(
-				{ message: 'Invalid signature' },
+				{ message: 'Invalid signature.' },
 				{ status: 401 }
 			);
 		}
@@ -124,7 +124,7 @@ export async function POST(req: Request) {
 		return NextResponse.json({ message: '' }, { status: 200 });
 	} catch (e) {
 		return NextResponse.json(
-			{ message: 'Something went wrong' },
+			{ message: 'Something went wrong.' },
 			{ status: 500 }
 		);
 	}
