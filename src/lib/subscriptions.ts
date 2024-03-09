@@ -3,19 +3,22 @@ import { ISubscriptionPlan, IUserPlan } from '@/types/types';
 export const freePlan: ISubscriptionPlan = {
 	name: '',
 	type: 'free',
-	planId: '',
+	monthlyPlanId: '',
+	yearlyPlanId: '',
 };
 
 export const proPlan: ISubscriptionPlan = {
 	name: '',
 	type: 'basic',
-	planId: '',
+	monthlyPlanId: '',
+	yearlyPlanId: '',
 };
 
 export const basicPlan: ISubscriptionPlan = {
 	name: '',
 	type: 'pro',
-	planId: '',
+	monthlyPlanId: '',
+	yearlyPlanId: '',
 };
 
 export function getUserSubscriptionPlan(
@@ -39,7 +42,10 @@ export function getUserSubscriptionPlan(
 	}
 
 	const plan = subscriptions.find((subscription) => {
-		return (subscription.planId || '') === userPlan.variantId;
+		return (
+			subscription.monthlyPlanId === userPlan.variantId ||
+			subscription.yearlyPlanId === userPlan.variantId
+		);
 	});
 
 	return plan || freePlan;
