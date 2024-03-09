@@ -1,6 +1,5 @@
 import { connectDB } from '@/lib/connect-db';
 import { Order } from '@/models/order.model';
-import { PaymentHistory } from '@/models/payment-history.model';
 import { UserPlan } from '@/models/user-plan.model';
 import { NextResponse } from 'next/server';
 
@@ -101,22 +100,6 @@ export async function POST(req: Request) {
 							}
 						);
 					}
-
-					let paymentHistoryStatus = 'success';
-					if (eventName === 'subscription_payment_failed') {
-						paymentHistoryStatus = 'failed';
-					} else if (eventName === 'subscription_payment_refunded') {
-						paymentHistoryStatus = 'refunded';
-					}
-
-					await PaymentHistory.create({
-						userId,
-						subscriptionId: `${payload.data.attributes.first_subscription_item.subscription_id}`,
-						productId: `${payload.data.attributes.product_id}`,
-						variantId: `${payload.data.attributes.variant_id}`,
-						status: paymentHistoryStatus,
-						productName: payload.data.attributes.product_name || '',
-					});
 					break;
 			}
 		}
