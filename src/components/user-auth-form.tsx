@@ -70,7 +70,7 @@ export function UserAuthForm() {
                         {isLoading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        Sign In
+                        Send Magic Link
                     </Button>
                 </div>
                 {urlError &&
