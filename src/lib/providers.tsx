@@ -4,6 +4,8 @@ import React, { ReactNode } from "react";
 import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeProviderProps } from "next-themes/dist/types";
 
 export const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;
@@ -88,13 +90,17 @@ export const GoogleAnalyticsProvider = () => {
     );
 };
 
+export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
+    return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+};
+
 const AuthProvider = ({ children }: { children: ReactNode; }) => {
     return <SessionProvider>{children}</SessionProvider>;
 };
 
 export const Providers = ({ children }: { children: ReactNode; }) => {
     return (
-        <>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <GoogleAnalyticsProvider />
             <MicrosoftClarityProvider />
             <CrispChatProvider />
@@ -102,6 +108,6 @@ export const Providers = ({ children }: { children: ReactNode; }) => {
                 {children}
                 <Toaster />
             </AuthProvider>
-        </>
+        </ThemeProvider>
     );
 };

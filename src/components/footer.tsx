@@ -5,7 +5,7 @@ export const Footer = () => {
     return (
         <footer className="py-20">
             <div className="flex flex-col items-center max-w-[1200px] mx-auto px-4">
-                <Link aria-label="LectureKit" href="/" className="items-center md:flex">
+                <Link aria-label="Logo" href="/" className="items-center md:flex">
                     <Logo />
                 </Link>
                 {/* <p className="mt-2 text-center text-muted-foreground">Your Catch Line</p> */}
