@@ -1,5 +1,6 @@
 'use client';
 
+import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
@@ -21,6 +22,7 @@ export default function Home() {
     <>
       <Header />
       <button onClick={() => createCheckout('269320')}>click</button>
+      <Footer />
     </>
   );
 }
