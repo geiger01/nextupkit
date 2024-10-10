@@ -3,12 +3,8 @@
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 
 export default function Home() {
-  const { data: session, status: sessionStatus } = useSession();
-
   async function createCheckout(variantId: string) {
     try {
       const { data } = await axios.post('/api/checkouts', { variantId });
