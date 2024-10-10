@@ -21,9 +21,6 @@ export default function Home() {
     <>
       <Header />
       <button onClick={() => createCheckout('269320')}>click</button>
-      <p>
-        {session?.user?.email}
-      </p>
     </>
   );
 }
