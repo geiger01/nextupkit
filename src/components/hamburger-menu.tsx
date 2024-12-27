@@ -12,12 +12,13 @@ import {
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
+import { ROUTES } from "@/lib/consts";
 
 interface HamburgerMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const HamburgerMenu = ({ ...props }: HamburgerMenuProps) => {
-    
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className={props.className}>
@@ -26,9 +27,11 @@ export const HamburgerMenu = ({ ...props }: HamburgerMenuProps) => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="min-w-[200px]" align="end">
-                <DropdownMenuItem className="cursor-pointer" asChild>
-                    <Link href="/pricing">Pricing</Link>
-                </DropdownMenuItem>
+                {ROUTES.map((route) => (
+                    <DropdownMenuItem key={route.path} className="cursor-pointer" asChild>
+                        <Link href={route.path}>{route.name}</Link>
+                    </DropdownMenuItem>
+                ))}
                 <DropdownMenuSeparator />
                 <div className="text-sm flex justify-between items-center p-[0px_0px_0_8px]">
                     Mode

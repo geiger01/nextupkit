@@ -1,24 +1,29 @@
 import { ISubscriptionPlan, IUserPlan } from '@/types/types';
 
+// Replace plan IDs with your variant IDs
+
 export const freePlan: ISubscriptionPlan = {
 	name: '',
 	type: 'free',
-	monthlyPlanId: '',
-	yearlyPlanId: '',
+	// Replace
+	monthlyPlanId: '269320',
+	yearlyPlanId: '269320',
 };
 
 export const basicPlan: ISubscriptionPlan = {
 	name: '',
 	type: 'basic',
-	monthlyPlanId: '',
-	yearlyPlanId: '',
+	// Replace
+	monthlyPlanId: '269320',
+	yearlyPlanId: '269320',
 };
 
 export const proPlan: ISubscriptionPlan = {
 	name: '',
 	type: 'pro',
-	monthlyPlanId: '',
-	yearlyPlanId: '',
+	// Replace
+	monthlyPlanId: '269320',
+	yearlyPlanId: '269320',
 };
 
 export function getUserSubscriptionPlan(

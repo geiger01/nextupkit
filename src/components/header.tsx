@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { HamburgerMenu } from "./hamburger-menu";
 import { UserAccountNav } from "./user-account-nav";
 import { IUser } from "@/types/types";
+import { ROUTES } from "@/lib/consts";
 
 export const Header = () => {
     const pathname = usePathname();
@@ -24,17 +25,20 @@ export const Header = () => {
                         <Logo />
                     </Link>
                     <nav className="gap-8 hidden md:flex">
-                        <Link
-                            href={'/pricing'}
-                            className={cn(
-                                "flex relative items-center transition-colors hover:text-foreground/80 text-md",
-                                pathname === '/pricing'
-                                    ? "text-foreground after:absolute after:w-full after:border-b-2 after:rounded-lg after:border-primary after:bottom-[-17px]"
-                                    : "text-foreground/60",
-                            )}
-                        >
-                            Pricing
-                        </Link>
+                        {ROUTES.map((route) => (
+                            <Link
+                                key={route.path}
+                                href={route.path}
+                                className={cn(
+                                    "flex relative items-center transition-colors hover:text-foreground/80 text-md",
+                                    pathname === route.path
+                                        ? "text-foreground after:absolute after:w-full after:border-b-2 after:rounded-lg after:border-primary after:bottom-[-17px]"
+                                        : "text-foreground/60",
+                                )}
+                            >
+                                {route.name}
+                            </Link>
+                        ))}
                     </nav>
                 </div>
                 <div className="flex items-center gap-2">

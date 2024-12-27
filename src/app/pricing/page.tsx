@@ -24,7 +24,7 @@ export default async function PricingPage() {
     return (
         <>
             <Header />
-            <Pricing />
+            <Pricing userPlan={plan}/>
             <Footer />
         </>
     );
