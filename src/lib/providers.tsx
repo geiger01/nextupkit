@@ -5,9 +5,10 @@ import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { TooltipProvider as TooltipProviderComp } from "@/components/ui/tooltip";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 
-export const CrispChatProvider = () => {
+const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;
 
     if (!crispId) {
@@ -34,7 +35,7 @@ export const CrispChatProvider = () => {
     );
 };
 
-export const MicrosoftClarityProvider = () => {
+const MicrosoftClarityProvider = () => {
     const clarityTag = process.env.NEXT_PUBLIC_MICROSOFT_CLARITY;
     const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
 
@@ -59,7 +60,7 @@ export const MicrosoftClarityProvider = () => {
     );
 };
 
-export const GoogleAnalyticsProvider = () => {
+const GoogleAnalyticsProvider = () => {
     const gtag = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
     const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
 
@@ -90,13 +91,18 @@ export const GoogleAnalyticsProvider = () => {
     );
 };
 
-export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
+const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
     return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 };
 
 const AuthProvider = ({ children }: { children: ReactNode; }) => {
     return <SessionProvider>{children}</SessionProvider>;
 };
+
+const TooltipProvider = ({ children, ...props }: ThemeProviderProps) => {
+    return <TooltipProviderComp {...props}>{children}</TooltipProviderComp>;
+};
+
 
 export const Providers = ({ children }: { children: ReactNode; }) => {
     return (
@@ -105,8 +111,10 @@ export const Providers = ({ children }: { children: ReactNode; }) => {
             <MicrosoftClarityProvider />
             <CrispChatProvider />
             <AuthProvider>
-                {children}
-                <Toaster />
+                <TooltipProvider>
+                    {children}
+                    <Toaster />
+                </TooltipProvider>
             </AuthProvider>
         </ThemeProvider>
     );

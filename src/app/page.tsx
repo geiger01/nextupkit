@@ -1,6 +1,7 @@
 import { FAQ } from "@/components/faq";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { SocialProof } from "@/components/social-proof";
 import { Steps } from "@/components/steps";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <SocialProof />
       <Steps />
       <FAQ
         faqs={[
