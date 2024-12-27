@@ -18,7 +18,7 @@ export default async function PricingPage() {
     const userSubscription: IUserPlan | null = await UserPlan.findOne({
         userId: session?.user.id,
     });
-
+    
     const plan = getUserSubscriptionPlan(userSubscription);
 
     return (

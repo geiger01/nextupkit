@@ -5,9 +5,8 @@ import { ISubscriptionPlan, IUserPlan } from '@/types/types';
 export const freePlan: ISubscriptionPlan = {
 	name: '',
 	type: 'free',
-	// Replace
-	monthlyPlanId: '269320',
-	yearlyPlanId: '269320',
+	monthlyPlanId: '',
+	yearlyPlanId: '',
 };
 
 export const basicPlan: ISubscriptionPlan = {
