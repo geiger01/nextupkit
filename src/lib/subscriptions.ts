@@ -7,14 +7,14 @@ export const freePlan: ISubscriptionPlan = {
 	yearlyPlanId: '',
 };
 
-export const proPlan: ISubscriptionPlan = {
+export const basicPlan: ISubscriptionPlan = {
 	name: '',
 	type: 'basic',
 	monthlyPlanId: '',
 	yearlyPlanId: '',
 };
 
-export const basicPlan: ISubscriptionPlan = {
+export const proPlan: ISubscriptionPlan = {
 	name: '',
 	type: 'pro',
 	monthlyPlanId: '',
