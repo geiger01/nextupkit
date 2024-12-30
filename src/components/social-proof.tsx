@@ -10,10 +10,10 @@ export function SocialProof() {
         <div className='mt-8 flex items-center gap-5 flex-wrap'>
             <AvatarGroup
                 users={[
-                    { name: 'John Doe', thumbnail: '' },
-                    { name: 'Jane Doe', thumbnail: '' },
-                    { name: 'John Doe', thumbnail: '' },
-                    { name: 'Jane Doe', thumbnail: '' },
+                    { name: 'John Doe', thumbnail: 'https://avatar.iran.liara.run/public/35' },
+                    { name: 'Jane Doe', thumbnail: 'https://avatar.iran.liara.run/public/54' },
+                    { name: 'John Doe', thumbnail: 'https://avatar.iran.liara.run/public/24' },
+                    { name: 'Jane Doe', thumbnail: 'https://avatar.iran.liara.run/public/72' },
                 ]}
                 avatarClassname='w-11 h-11 border-2'
                 iconClassname='w-5 h-5'
@@ -26,7 +26,7 @@ export function SocialProof() {
                     <span className='text-foreground'>
                         {DEFAULT_TOTAL_USERS}+
                     </span>
-                    {' '}creators crafting courses
+                    {' '}creators crafting products
                 </p>
             </div>
         </div>

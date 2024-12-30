@@ -2,7 +2,7 @@ import { FAQ } from "@/components/faq";
 import { Features } from "@/components/features";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { SocialProof } from "@/components/social-proof";
+import { Hero } from "@/components/hero";
 import { Steps } from "@/components/steps";
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <SocialProof />
+      <Hero />
       <Steps />
       <Features />
       <FAQ
