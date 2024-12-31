@@ -16,7 +16,7 @@ export interface IUserPlan {
 export interface ISubscriptionPlan {
 	name: string;
 	type: 'free' | 'basic' | 'pro';
-	// add features as needed, f.e: maxItems
+	// add features as needed, e.g: maxItems
 	monthlyPlanId: string;
 	yearlyPlanId: string;
 }
