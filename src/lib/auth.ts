@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
+import Facebook from 'next-auth/providers/facebook';
 import EmailProvider, {
 	SendVerificationRequestParams,
 } from 'next-auth/providers/email';
@@ -23,6 +24,10 @@ export const authOptions: NextAuthOptions = {
 		Github({
 			clientId: process.env.GITHUB_CLIENT_ID as string,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+		}),
+		Facebook({
+			clientId: process.env.FACEBOOK_CLIENT_ID as string,
+			clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
 		}),
 		EmailProvider({
 			from: process.env.FROM_EMAIL as string,

@@ -12,8 +12,7 @@ import { LOGIN_REDIRECT } from "@/lib/consts";
 
 export function UserAuthForm() {
     const [isLoading, setIsLoading] = useState(false);
-    const [isGitHubLoading, setIsGitHubLoading] = useState(false);
-    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [loadingPlatform, setLoadingPlatform] = useState<null | 'github' | 'google' | 'facebook'>();
     const [email, setEmail] = useState('');
 
     const searchParams = useSearchParams();
@@ -29,7 +28,7 @@ export function UserAuthForm() {
         const signInResult = await signIn("email", {
             email,
             callbackUrl: callbackUrl || LOGIN_REDIRECT,
-            redirect:false
+            redirect: false
         });
 
         setIsLoading(false);
@@ -47,6 +46,7 @@ export function UserAuthForm() {
         });
     }
 
+    const isDisabled = isLoading || Boolean(loadingPlatform);
     return (
         <div className={cn("grid gap-6")}>
             <form onSubmit={onSubmit}>
@@ -61,7 +61,7 @@ export function UserAuthForm() {
                             autoCapitalize="none"
                             autoComplete="email"
                             autoCorrect="off"
-                            disabled={isLoading || isGitHubLoading || isGoogleLoading}
+                            disabled={isDisabled}
                         />
                     </div>
                     <Button
@@ -94,32 +94,14 @@ export function UserAuthForm() {
                     type="button"
                     variant={'outline'}
                     onClick={() => {
-                        setIsGitHubLoading(true);
-                        signIn("github", {
-                            callbackUrl: callbackUrl || LOGIN_REDIRECT
-                        });
-                    }}
-                    disabled={isLoading || isGoogleLoading || isGitHubLoading}
-                >
-                    {isGitHubLoading ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                        <Github className="mr-2 h-4 w-4" />
-                    )}{" "}
-                    Github
-                </Button>
-                <Button
-                    type="button"
-                    variant={'outline'}
-                    onClick={() => {
-                        setIsGoogleLoading(true);
+                        setLoadingPlatform('google');
                         signIn("google", {
                             callbackUrl: callbackUrl || LOGIN_REDIRECT
                         });
                     }}
-                    disabled={isLoading || isGoogleLoading || isGitHubLoading}
+                    disabled={isDisabled}
                 >
-                    {isGoogleLoading ? (
+                    {loadingPlatform === 'google' ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                         <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
@@ -127,6 +109,46 @@ export function UserAuthForm() {
                         </svg>
                     )}{" "}
                     Google
+                </Button>
+                <Button
+                    type="button"
+                    variant={'outline'}
+                    onClick={() => {
+                        setLoadingPlatform('facebook');
+                        signIn("facebook", {
+                            callbackUrl: callbackUrl || LOGIN_REDIRECT
+                        });
+                    }}
+                    disabled={isDisabled}
+                >
+                    {loadingPlatform === 'facebook' ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                        <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px">
+                            <path
+                                fill="#1877F2"
+                                d="M25,3C12.85,3,3,12.85,3,25c0,11.03,8.125,20.137,18.712,21.728V30.831h-5.443v-5.783h5.443v-3.848 c0-6.371,3.104-9.168,8.399-9.168c2.536,0,3.877,0.188,4.512,0.274v5.048h-3.612c-2.248,0-3.033,2.131-3.033,4.533v3.161h6.588 l-0.894,5.783h-5.694v15.944C38.716,45.318,47,36.137,47,25C47,12.85,37.15,3,25,3z" />
+                        </svg>
+                    )}{" "}
+                    Facebook
+                </Button>
+                <Button
+                    type="button"
+                    variant={'outline'}
+                    onClick={() => {
+                        setLoadingPlatform('github');
+                        signIn("github", {
+                            callbackUrl: callbackUrl || LOGIN_REDIRECT
+                        });
+                    }}
+                    disabled={isDisabled}
+                >
+                    {loadingPlatform === 'github' ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                        <Github className="mr-2 h-4 w-4" />
+                    )}{" "}
+                    Github
                 </Button>
             </div>
         </div>
