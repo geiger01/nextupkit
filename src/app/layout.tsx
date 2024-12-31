@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "NextUpKit Template",
-  description: "Transform your ideas into reality without breaking the bank using our Next.js starter kit.",
+  description: "The Next.js starter kit that will help you transform your ideas into reality without breaking the bank.",
 };
 
 export default function RootLayout({

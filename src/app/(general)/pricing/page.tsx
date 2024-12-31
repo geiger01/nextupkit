@@ -8,7 +8,7 @@ import { UserPlan } from '@/models/user-plan.model';
 import { Pricing } from '@/components/pricing';
 
 export const metadata = {
-    title: "NextUpKit | Pricing",
+    title: "Pricing",
 };
 
 export default async function PricingPage() {
