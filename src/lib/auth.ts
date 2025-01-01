@@ -12,6 +12,7 @@ import { connectDB } from './connect-db';
 import { Resend } from 'resend';
 import { Adapter } from 'next-auth/adapters';
 import { getServerSession } from 'next-auth';
+import { FROM_EMAIL } from './consts';
 
 // For more information on each option (and a full list of options) go to
 // https://authjs.dev/reference/providers/oauth
@@ -30,7 +31,7 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
 		}),
 		EmailProvider({
-			from: process.env.FROM_EMAIL as string,
+			from: FROM_EMAIL,
 			sendVerificationRequest: async (
 				params: SendVerificationRequestParams
 			) => {

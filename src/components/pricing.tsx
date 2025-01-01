@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import { Switch } from "./ui/switch";
-import { CONTACT_EMAIL } from "@/lib/consts";
+import { SUPPORT_EMAIL } from "@/lib/consts";
 import { ISubscriptionPlan } from "@/types/types";
 
 export const Pricing = ({ userPlan }: { userPlan: ISubscriptionPlan; }) => {
@@ -181,7 +181,7 @@ export const Pricing = ({ userPlan }: { userPlan: ISubscriptionPlan; }) => {
                 </div>
                 <div className="mt-[50px] text-center">
                     Need a Custom Plan? <a
-                        href={`mailto:${CONTACT_EMAIL}?subject=Custom%20Plan`}
+                        href={`mailto:${SUPPORT_EMAIL}?subject=Custom%20Plan`}
                         className="text-primary font-semibold"
                     >
                         Contact us
