@@ -22,7 +22,7 @@ export interface ISubscriptionPlan {
 }
 
 export interface IUser {
-	id: string;
+	_id?: string;
 	name: string;
 	email: string;
 	role: 'user' | 'admin';
