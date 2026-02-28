@@ -6,7 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { TooltipProvider as TooltipProviderComp } from "@/components/ui/tooltip";
-import { type ThemeProviderProps } from "next-themes/dist/types";
+import { type ThemeProviderProps } from "next-themes";
 
 const CrispChatProvider = () => {
     const crispId = process.env.NEXT_PUBLIC_CRISP_ID;

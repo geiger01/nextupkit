@@ -7,6 +7,8 @@ import { IUserPlan } from '@/types/types';
 import { UserPlan } from '@/models/user-plan.model';
 import { Pricing } from '@/components/pricing';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
     title: "Pricing",
 };

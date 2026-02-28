@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { lemonsqueezyClient } from '@/lib/lemonsqueezy';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
 	try {
 		const session = await getSession();

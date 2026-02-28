@@ -1,0 +1,57 @@
+---
+title: "Why We Upgraded to Next.js 15"
+description: "A look at the key improvements in Next.js 15 and what they mean for NextUpKit users."
+date: "2025-02-01"
+author: "NextUpKit Team"
+tags:
+  - nextjs
+  - updates
+---
+
+We recently upgraded NextUpKit from Next.js 14 to **Next.js 15**, and we're excited about the improvements. Here's what changed and why it matters for your projects.
+
+## React 19 Support
+
+Next.js 15 ships with React 19, bringing significant improvements:
+
+- **Better performance** — React 19 includes optimizations that reduce unnecessary re-renders
+- **Improved Server Components** — Enhanced streaming and suspense handling
+- **New hooks** — Access to the latest React primitives
+
+## Async Request APIs
+
+One of the biggest changes in Next.js 15 is that request-time APIs like `cookies()`, `headers()`, and page `params` are now **asynchronous**:
+
+```typescript
+// Next.js 15 — params is now a Promise
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  // ...
+}
+```
+
+This change enables better streaming and partial rendering capabilities.
+
+## Improved Caching
+
+Next.js 15 changes caching defaults to be **more predictable**:
+
+- `fetch` requests are no longer cached by default
+- Route handlers are no longer cached by default
+- The client-side router cache no longer caches page components by default
+
+This means your app always shows fresh data unless you explicitly opt into caching — a much better default for most applications.
+
+## What This Means for You
+
+As a NextUpKit user, you get all these benefits out of the box. We've already handled the migration work, including:
+
+- Updated all async APIs to use the new patterns
+- Configured proper dynamic rendering for auth-protected pages
+- Ensured all components work with React 19
+
+Just pull the latest version and you're ready to go!
