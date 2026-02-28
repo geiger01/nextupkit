@@ -1,6 +1,8 @@
 import { connectDB } from '@/lib/connect-db';
 import { getSession } from "@/lib/auth";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
     title: "Dashboard",
 };
