@@ -22,7 +22,7 @@ export const HamburgerMenu = ({ ...props }: HamburgerMenuProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className={props.className}>
-                <Button variant="outline" className="w-[2.5rem] h-[2.5rem] p-0">
+                <Button variant="outline" className="w-[2.5rem] h-[2.5rem] p-0" aria-label="Open menu">
                     <Menu />
                 </Button>
             </DropdownMenuTrigger>

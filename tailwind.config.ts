@@ -20,8 +20,8 @@ const config = {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'var(--font-geist-sans)', ...fontFamily.sans],
-				mono: ['var(--font-geist-mono)', ...fontFamily.mono],
+				sans: ['var(--font-inter)', ...fontFamily.sans],
+				mono: [...fontFamily.mono],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
